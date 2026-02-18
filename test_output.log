@@ -1,0 +1,278 @@
+[dotenv@17.2.4] injecting env (9) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+
+
+  DAO Governor
+    Deployment
+      ✔ Should set the right voting token (204ms)
+      ✔ Should set the right timelock
+    Voting Power
+      ✔ Should show correct voting power after delegation
+      ✔ Should show 0 voting power before delegation
+    Standard Voting
+      1) Should allow creating a standard proposal
+      2) Should tally votes correctly (1 token = 1 vote)
+    Quadratic Voting
+      3) Should tally votes using Square Root (Quadratic)
+
+
+  4 passing (251ms)
+  3 failing
+
+  1) DAO Governor
+       Standard Voting
+         Should allow creating a standard proposal:
+     Error: VM Exception while processing transaction: reverted with custom error 'ERC5805FutureLookup(11, 11)'
+    at GovernanceToken._validateTimepoint (@openzeppelin/contracts/governance/utils/Votes.sol:79)
+    at GovernanceToken.getPastVotes (@openzeppelin/contracts/governance/utils/Votes.sol:99)
+    at GovernanceToken.<unknown> (contracts/GovernanceToken.sol:14)
+    at MyGovernor._getVotes (@openzeppelin/contracts/governance/extensions/GovernorVotes.sol:61)
+    at MyGovernor._queueOperations (@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.sol:88)
+    at MyGovernor.proposeWithConfig (contracts/MyGovernor.sol:70)
+    at EdrProviderWrapper.request (node_modules\hardhat\src\internal\hardhat-network\provider\provider.ts:453:41)
+    at HardhatEthersSigner.sendTransaction (node_modules\@nomicfoundation\hardhat-ethers\src\signers.ts:185:18)
+    at send (node_modules\ethers\src.ts\contract\contract.ts:313:20)
+    at Proxy.proposeWithConfig (node_modules\ethers\src.ts\contract\contract.ts:352:16)
+    at Context.<anonymous> (test\governor.test.js:91:18)
+  
+
+  2) DAO Governor
+       Standard Voting
+         Should tally votes correctly (1 token = 1 vote):
+     Error: VM Exception while processing transaction: reverted with custom error 'ERC5805FutureLookup(11, 11)'
+    at GovernanceToken._validateTimepoint (@openzeppelin/contracts/governance/utils/Votes.sol:79)
+    at GovernanceToken.getPastVotes (@openzeppelin/contracts/governance/utils/Votes.sol:99)
+    at GovernanceToken.<unknown> (contracts/GovernanceToken.sol:14)
+    at MyGovernor._getVotes (@openzeppelin/contracts/governance/extensions/GovernorVotes.sol:61)
+    at MyGovernor._queueOperations (@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.sol:88)
+    at MyGovernor.proposeWithConfig (contracts/MyGovernor.sol:70)
+    at EdrProviderWrapper.request (node_modules\hardhat\src\internal\hardhat-network\provider\provider.ts:453:41)
+    at HardhatEthersSigner.sendTransaction (node_modules\@nomicfoundation\hardhat-ethers\src\signers.ts:185:18)
+    at send (node_modules\ethers\src.ts\contract\contract.ts:313:20)
+    at Proxy.proposeWithConfig (node_modules\ethers\src.ts\contract\contract.ts:352:16)
+    at Context.<anonymous> (test\governor.test.js:113:7)
+  
+
+  3) DAO Governor
+       Quadratic Voting
+         Should tally votes using Square Root (Quadratic):
+     Error: VM Exception while processing transaction: reverted with custom error 'ERC5805FutureLookup(11, 11)'
+    at GovernanceToken._validateTimepoint (@openzeppelin/contracts/governance/utils/Votes.sol:79)
+    at GovernanceToken.getPastVotes (@openzeppelin/contracts/governance/utils/Votes.sol:99)
+    at GovernanceToken.<unknown> (contracts/GovernanceToken.sol:14)
+    at MyGovernor._getVotes (@openzeppelin/contracts/governance/extensions/GovernorVotes.sol:61)
+    at MyGovernor._queueOperations (@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.sol:88)
+    at MyGovernor.proposeWithConfig (contracts/MyGovernor.sol:70)
+    at EdrProviderWrapper.request (node_modules\hardhat\src\internal\hardhat-network\provider\provider.ts:453:41)
+    at HardhatEthersSigner.sendTransaction (node_modules\@nomicfoundation\hardhat-ethers\src\signers.ts:185:18)
+    at send (node_modules\ethers\src.ts\contract\contract.ts:313:20)
+    at Proxy.proposeWithConfig (node_modules\ethers\src.ts\contract\contract.ts:352:16)
+    at Context.<anonymous> (test\governor.test.js:154:7)
+  
+
+
+
+·············································································································
+|  [32m[1mSolidity and Network Configuration[22m[39m                                                                       │
+························|·················|···············|·················|································
+|  [36mSolidity: 0.8.24[39m     ·  [36mOptim: true[39m    ·  [36mRuns: 200[39m    ·  [36mviaIR: true[39m    ·     [36mBlock: 60,000,000 gas[39m     │
+························|·················|···············|·················|································
+|  [32m[1mMethods[22m[39m                                                                                                  │
+························|·················|···············|·················|················|···············
+|  [32m[1mContracts / Methods[22m[39m  ·  [1mMin[22m            ·  [1mMax[22m          ·  [1mAvg[22m            ·  [1m# calls[22m       ·  [1musd (avg)[22m   │
+························|·················|···············|·················|················|···············
+|  [1mGovernanceToken[22m      ·                                                                                   │
+························|·················|···············|·················|················|···············
+|      delegate         ·         [36m95,577[39m  ·       [31m95,589[39m  ·         95,583  ·             2  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|      transfer         ·         [36m56,276[39m  ·       [31m56,288[39m  ·         56,284  ·             3  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|  [1mGovernorTimelock[22m     ·                                                                                   │
+························|·················|···············|·················|················|···············
+|      grantRole        ·         [36m51,006[39m  ·       [31m51,246[39m  ·         51,126  ·             2  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|  [32m[1mDeployments[22m[39m                            ·                                 ·  [1m% of limit[22m    ·              │
+························|·················|···············|·················|················|···············
+|  [1mGovernanceToken[22m      ·              [90m-[39m  ·            [90m-[39m  ·      2,079,460  ·         3.5 %  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|  [1mGovernorTimelock[22m     ·              [90m-[39m  ·            [90m-[39m  ·      1,363,383  ·         2.3 %  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|  [1mMyGovernor[22m           ·              [90m-[39m  ·            [90m-[39m  ·      3,680,498  ·         6.1 %  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|  [32m[1mKey[22m[39m                                                                                                      │
+·············································································································
+|  [35m[1m◯[22m[39m  Execution gas for this method does not include intrinsic gas overhead                                 │
+·············································································································
+|  [35m[1m△[22m[39m  Cost was non-zero but below the precision setting for the currency display (see options)              │
+·············································································································
+|  [35mToolchain:[39m  hardhat                                                                                      │
+·············································································································
+Starting tests...
+
+[0m[0m
+[0m  DAO Governor[0m
+[0m    Deployment[0m
+    [32m  [32m✔[39m[0m[90m Should set the right voting token[0m[31m (146ms)[0m
+    [32m  [32m✔[39m[0m[90m Should set the right timelock[0m
+[0m    Voting Power[0m
+    [32m  [32m✔[39m[0m[90m Should show correct voting power after delegation[0m
+    [32m  [32m✔[39m[0m[90m Should show 0 voting power before delegation[0m
+[0m    Standard Voting[0m
+    [31m  1) Should allow creating a standard proposal[0m
+    [31m  2) Should tally votes correctly (1 token = 1 vote)[0m
+[0m    Quadratic Voting[0m
+    [31m  3) Should tally votes using Square Root (Quadratic)[0m
+
+
+[92m [0m[32m 4 passing[0m[90m (181ms)[0m
+[31m  3 failing[0m
+
+[0m  1) DAO Governor
+       Standard Voting
+         Should allow creating a standard proposal:
+[0m[31m     Error: VM Exception while processing transaction: reverted with custom error 'ERC5805FutureLookup(11, 11)'
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at EdrProviderWrapper.request (node_modules\hardhat\internal\hardhat-network\provider\provider.js:281:72)
+    at async HardhatEthersSigner.sendTransaction (node_modules\@nomicfoundation\hardhat-ethers\signers.js:130:22)
+    at async send (node_modules\ethers\lib.commonjs\contract\contract.js:228:20)
+    at async Proxy.proposeWithConfig (node_modules\ethers\lib.commonjs\contract\contract.js:261:16)
+    at async Context.<anonymous> (test\governor.test.js:91:18)[0m[90m
+  
+[0m
+[0m  2) DAO Governor
+       Standard Voting
+         Should tally votes correctly (1 token = 1 vote):
+[0m[31m     Error: VM Exception while processing transaction: reverted with custom error 'ERC5805FutureLookup(11, 11)'
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at EdrProviderWrapper.request (node_modules\hardhat\internal\hardhat-network\provider\provider.js:281:72)
+    at async HardhatEthersSigner.sendTransaction (node_modules\@nomicfoundation\hardhat-ethers\signers.js:130:22)
+    at async send (node_modules\ethers\lib.commonjs\contract\contract.js:228:20)
+    at async Proxy.proposeWithConfig (node_modules\ethers\lib.commonjs\contract\contract.js:261:16)
+    at async Context.<anonymous> (test\governor.test.js:113:7)[0m[90m
+  
+[0m
+[0m  3) DAO Governor
+       Quadratic Voting
+         Should tally votes using Square Root (Quadratic):
+[0m[31m     Error: VM Exception while processing transaction: reverted with custom error 'ERC5805FutureLookup(11, 11)'
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at [SolidityCallSite]
+    at EdrProviderWrapper.request (node_modules\hardhat\internal\hardhat-network\provider\provider.js:281:72)
+    at async HardhatEthersSigner.sendTransaction (node_modules\@nomicfoundation\hardhat-ethers\signers.js:130:22)
+    at async send (node_modules\ethers\lib.commonjs\contract\contract.js:228:20)
+    at async Proxy.proposeWithConfig (node_modules\ethers\lib.commonjs\contract\contract.js:261:16)
+    at async Context.<anonymous> (test\governor.test.js:154:7)[0m[90m
+  
+[0m
+
+
+·············································································································
+|  [32m[1mSolidity and Network Configuration[22m[39m                                                                       │
+························|·················|···············|·················|································
+|  [36mSolidity: 0.8.24[39m     ·  [36mOptim: true[39m    ·  [36mRuns: 200[39m    ·  [36mviaIR: true[39m    ·     [36mBlock: 60,000,000 gas[39m     │
+························|·················|···············|·················|································
+|  [32m[1mMethods[22m[39m                                                                                                  │
+························|·················|···············|·················|················|···············
+|  [32m[1mContracts / Methods[22m[39m  ·  [1mMin[22m            ·  [1mMax[22m          ·  [1mAvg[22m            ·  [1m# calls[22m       ·  [1musd (avg)[22m   │
+························|·················|···············|·················|················|···············
+|  [1mGovernanceToken[22m      ·                                                                                   │
+························|·················|···············|·················|················|···············
+|      delegate         ·         [36m95,577[39m  ·       [31m95,589[39m  ·         95,583  ·             2  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|      transfer         ·         [36m56,276[39m  ·       [31m56,288[39m  ·         56,284  ·             3  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|  [1mGovernorTimelock[22m     ·                                                                                   │
+························|·················|···············|·················|················|···············
+|      grantRole        ·         [36m51,006[39m  ·       [31m51,246[39m  ·         51,126  ·             2  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|  [32m[1mDeployments[22m[39m                            ·                                 ·  [1m% of limit[22m    ·              │
+························|·················|···············|·················|················|···············
+|  [1mGovernanceToken[22m      ·              [90m-[39m  ·            [90m-[39m  ·      2,079,460  ·         3.5 %  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|  [1mGovernorTimelock[22m     ·              [90m-[39m  ·            [90m-[39m  ·      1,363,383  ·         2.3 %  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|  [1mMyGovernor[22m           ·              [90m-[39m  ·            [90m-[39m  ·      3,680,498  ·         6.1 %  ·           [32m[90m-[39m[32m[39m  │
+························|·················|···············|·················|················|···············
+|  [32m[1mKey[22m[39m                                                                                                      │
+·············································································································
+|  [35m[1m◯[22m[39m  Execution gas for this method does not include intrinsic gas overhead                                 │
+·············································································································
+|  [35m[1m△[22m[39m  Cost was non-zero but below the precision setting for the currency display (see options)              │
+·············································································································
+|  [35mToolchain:[39m  hardhat                                                                                      │
+·············································································································
+Tests successful!
+Starting tests...
+
+[0m[0m
+[0m  DAO Governor[0m
+[0m    Deployment[0m
+    [32m  [32m✔[39m[0m[90m Should set the right voting token[0m[31m (122ms)[0m
+    [32m  [32m✔[39m[0m[90m Should set the right timelock[0m
+[0m    Voting Power[0m
+    [32m  [32m✔[39m[0m[90m Should show correct voting power after delegation[0m
+    [32m  [32m✔[39m[0m[90m Should show 0 voting power before delegation[0m
+[0m    Standard Voting[0m
+    [32m  [32m✔[39m[0m[90m Should allow creating a standard proposal[0m
+    [32m  [32m✔[39m[0m[90m Should tally votes correctly (1 token = 1 vote)[0m
+[0m    Quadratic Voting[0m
+    [32m  [32m✔[39m[0m[90m Should tally votes using Square Root (Quadratic)[0m
+
+
+[92m [0m[32m 7 passing[0m[90m (183ms)[0m
+
+···············································································································
+|  [32m[1mSolidity and Network Configuration[22m[39m                                                                         │
+··························|·················|···············|·················|································
+|  [36mSolidity: 0.8.24[39m       ·  [36mOptim: true[39m    ·  [36mRuns: 200[39m    ·  [36mviaIR: true[39m    ·     [36mBlock: 60,000,000 gas[39m     │
+··························|·················|···············|·················|································
+|  [32m[1mMethods[22m[39m                                                                                                    │
+··························|·················|···············|·················|················|···············
+|  [32m[1mContracts / Methods[22m[39m    ·  [1mMin[22m            ·  [1mMax[22m          ·  [1mAvg[22m            ·  [1m# calls[22m       ·  [1musd (avg)[22m   │
+··························|·················|···············|·················|················|···············
+|  [1mGovernanceToken[22m        ·                                                                                   │
+··························|·················|···············|·················|················|···············
+|      delegate           ·         [36m95,577[39m  ·       [31m95,589[39m  ·         95,583  ·             2  ·           [32m[90m-[39m[32m[39m  │
+··························|·················|···············|·················|················|···············
+|      transfer           ·         [36m56,276[39m  ·       [31m56,288[39m  ·         56,284  ·             3  ·           [32m[90m-[39m[32m[39m  │
+··························|·················|···············|·················|················|···············
+|  [1mGovernorTimelock[22m       ·                                                                                   │
+··························|·················|···············|·················|················|···············
+|      grantRole          ·         [36m51,006[39m  ·       [31m51,246[39m  ·         51,126  ·             2  ·           [32m[90m-[39m[32m[39m  │
+··························|·················|···············|·················|················|···············
+|  [1mMyGovernor[22m             ·                                                                                   │
+··························|·················|···············|·················|················|···············
+|      castVote           ·         [36m87,602[39m  ·       [31m88,500[39m  ·         88,051  ·             2  ·           [32m[90m-[39m[32m[39m  │
+··························|·················|···············|·················|················|···············
+|      proposeWithConfig  ·         [36m80,749[39m  ·      [31m100,673[39m  ·         86,455  ·             4  ·           [32m[90m-[39m[32m[39m  │
+··························|·················|···············|·················|················|···············
+|  [32m[1mDeployments[22m[39m                              ·                                 ·  [1m% of limit[22m    ·              │
+··························|·················|···············|·················|················|···············
+|  [1mGovernanceToken[22m        ·              [90m-[39m  ·            [90m-[39m  ·      2,079,460  ·         3.5 %  ·           [32m[90m-[39m[32m[39m  │
+··························|·················|···············|·················|················|···············
+|  [1mGovernorTimelock[22m       ·              [90m-[39m  ·            [90m-[39m  ·      1,363,383  ·         2.3 %  ·           [32m[90m-[39m[32m[39m  │
+··························|·················|···············|·················|················|···············
+|  [1mMyGovernor[22m             ·              [90m-[39m  ·            [90m-[39m  ·      3,687,156  ·         6.1 %  ·           [32m[90m-[39m[32m[39m  │
+··························|·················|···············|·················|················|···············
+|  [32m[1mKey[22m[39m                                                                                                        │
+···············································································································
+|  [35m[1m◯[22m[39m  Execution gas for this method does not include intrinsic gas overhead                                   │
+···············································································································
+|  [35m[1m△[22m[39m  Cost was non-zero but below the precision setting for the currency display (see options)                │
+···············································································································
+|  [35mToolchain:[39m  hardhat                                                                                        │
+···············································································································
+Tests successful!

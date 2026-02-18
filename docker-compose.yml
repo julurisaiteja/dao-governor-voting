@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  hardhat:
+    build:
+      context: .
+      dockerfile: Dockerfile.hardhat
+    ports:
+      - "8545:8545"
+    networks:
+      - dao-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_RPC_URL=http://hardhat:8545
+    depends_on:
+      - hardhat
+    networks:
+      - dao-network
+
+networks:
+  dao-network:
+    driver: bridge

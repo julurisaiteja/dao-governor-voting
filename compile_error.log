@@ -1,0 +1,11 @@
+HardhatError: HH600: Compilation failed
+    at SimpleTaskDefinition.action (C:\Users\RAGHU VEER\dao-governor-voting\node_modules\hardhat\builtin-tasks\compile.js:300:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Environment._runTaskDefinition (C:\Users\RAGHU VEER\dao-governor-voting\node_modules\hardhat\internal\core\runtime-environment.js:228:20)
+    at async OverriddenTaskDefinition._action (C:\Users\RAGHU VEER\dao-governor-voting\node_modules\@typechain\hardhat\dist\index.js:44:30)
+    at async Environment._runTaskDefinition (C:\Users\RAGHU VEER\dao-governor-voting\node_modules\hardhat\internal\core\runtime-environment.js:228:20)
+    at async Environment.run (C:\Users\RAGHU VEER\dao-governor-voting\node_modules\hardhat\internal\core\runtime-environment.js:91:24)
+    at async SimpleTaskDefinition.action (C:\Users\RAGHU VEER\dao-governor-voting\node_modules\hardhat\builtin-tasks\compile.js:839:41)
+    at async Environment._runTaskDefinition (C:\Users\RAGHU VEER\dao-governor-voting\node_modules\hardhat\internal\core\runtime-environment.js:228:20)
+    at async Environment.run (C:\Users\RAGHU VEER\dao-governor-voting\node_modules\hardhat\internal\core\runtime-environment.js:91:24)
+    at async SimpleTaskDefinition.action (C:\Users\RAGHU VEER\dao-governor-voting\node_modules\hardhat\builtin-tasks\compile.js:896:9)

@@ -1,0 +1,22 @@
+node_modules
+.env
+cache
+artifacts
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Hardhat
+hardhat.config.js.swp
+
+# Next.js
+.next
+out
+build
+dist
+
+# Misc
+.DS_Store
+.vscode
+.idea

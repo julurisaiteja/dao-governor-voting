@@ -1,0 +1,13 @@
+[dotenv@17.2.4] injecting env (9) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[31m[1mError[22m[39m [31m[1mHH606:[22m[39m The project cannot be compiled, see reasons below.
+
+The Solidity version pragma statement in these files doesn't match any of the configured compilers in your config. Change the pragma or configure additional compiler versions in your hardhat config.
+
+  * contracts/MyGovernor.sol (^08.24)
+
+To learn more, run the command again with --verbose
+
+Read about compiler configuration at https://v2.hardhat.org/config
+
+
+For more info go to https://v2.hardhat.org/HH606 or run Hardhat with --show-stack-traces
