@@ -29,10 +29,18 @@ const StateColors = [
 export default function Home() {
     const [proposals, setProposals] = useState<Proposal[]>([]);
     const [loading, setLoading] = useState(true);
+    const [hasWallet, setHasWallet] = useState(true);
+    const [error, setError] = useState('');
+    const [query, setQuery] = useState('');
+    const [stateFilter, setStateFilter] = useState('All');
 
     useEffect(() => {
         const fetchProposals = async () => {
-            if (typeof window.ethereum === 'undefined') return;
+            if (typeof window.ethereum === 'undefined') {
+                setHasWallet(false);
+                setLoading(false);
+                return;
+            }
             try {
                 const provider = new ethers.BrowserProvider(window.ethereum);
                 const { governor } = await getContracts(provider);
@@ -76,6 +84,7 @@ export default function Home() {
                 setProposals(fetchedProposals.reverse()); // Newest first
             } catch (err) {
                 console.error("Error fetching proposals:", err);
+                setError('Could not read proposals from the configured Governor contract.');
             } finally {
                 setLoading(false);
             }
@@ -84,56 +93,105 @@ export default function Home() {
         fetchProposals();
     }, []);
 
+    const visibleProposals = proposals.filter((proposal) => {
+        const state = ProposalState[proposal.state] || 'Unknown';
+        const matchesState = stateFilter === 'All' || state === stateFilter;
+        const matchesQuery = `${proposal.description} ${proposal.proposer} ${proposal.id}`
+            .toLowerCase()
+            .includes(query.trim().toLowerCase());
+        return matchesState && matchesQuery;
+    });
+    const activeCount = proposals.filter((proposal) => proposal.state === 1).length;
+    const totalVotes = proposals.reduce(
+        (sum, proposal) => sum + Number(proposal.forVotes) + Number(proposal.againstVotes) + Number(proposal.abstainVotes),
+        0
+    );
+
     return (
-        <div className="min-h-screen pb-10">
+        <div className="governance-page min-h-screen pb-10">
             <Header />
 
-            <main className="container mt-8">
+            <main className="governance-main">
                 <Delegate />
-                <div className="flex justify-between items-center mb-8">
+                <section className="governance-heading">
                     <div>
-                        <h2 className="text-3xl font-bold mb-2">Governance Proposals</h2>
-                        <p className="text-gray-400">Participate in the DAO decision making process</p>
+                        <p className="governance-kicker">On-chain governance / Proposal register</p>
+                        <h2 className="text-3xl font-bold mb-2">Governance proposals</h2>
+                        <p>Review the docket, compare vote direction, and open a proposal to cast a wallet-backed vote.</p>
                     </div>
                     <Link href="/create" className="btn btn-primary">
-                        + Create Proposal
+                        Create proposal <span aria-hidden="true">+</span>
                     </Link>
-                </div>
+                </section>
+
+                <section className="governance-stats" aria-label="Governance summary">
+                    <div><span>Total proposals</span><strong>{proposals.length}</strong></div>
+                    <div><span>Active votes</span><strong>{activeCount}</strong></div>
+                    <div><span>Total votes cast</span><strong>{totalVotes.toLocaleString(undefined, { maximumFractionDigits: 1 })}</strong></div>
+                    <div><span>Data source</span><strong className="governance-source">Governor contract</strong></div>
+                </section>
+
+                <section className="proposal-tools" aria-label="Filter proposals">
+                    <label className="proposal-search">
+                        <span>Search the docket</span>
+                        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Title, proposer, or proposal ID" />
+                    </label>
+                    <label className="proposal-state-filter">
+                        <span>Status</span>
+                        <select value={stateFilter} onChange={(event) => setStateFilter(event.target.value)}>
+                            <option>All</option>
+                            {ProposalState.map((state) => <option key={state}>{state}</option>)}
+                        </select>
+                    </label>
+                    <span className="proposal-result-count">{visibleProposals.length} shown</span>
+                </section>
 
                 {loading ? (
-                    <div className="text-center py-20 text-gray-500">Loading proposals...</div>
+                    <div className="governance-message" role="status">Reading proposal events from the Governor contract...</div>
+                ) : !hasWallet ? (
+                    <div className="governance-message" role="status">
+                        <h3>Connect a wallet to read on-chain proposals</h3>
+                        <p>Install or enable an Ethereum wallet, then connect above. This page does not display fabricated votes.</p>
+                    </div>
+                ) : error ? (
+                    <div className="governance-message governance-error" role="alert">
+                        <h3>Governor data is unavailable</h3>
+                        <p>{error} Check the selected network and contract address.</p>
+                    </div>
                 ) : proposals.length === 0 ? (
-                    <div className="card text-center py-20">
-                        <h3 className="text-xl font-medium mb-2">No Proposals Yet</h3>
+                    <div className="governance-message">
+                        <h3>No proposals have been created</h3>
                         <p className="text-gray-400 mb-6">Be the first to create a proposal for the DAO.</p>
                         <Link href="/create" className="btn btn-secondary">Create Proposal</Link>
                     </div>
+                ) : visibleProposals.length === 0 ? (
+                    <div className="governance-message"><h3>No matching proposals</h3><p>Change the search or status filter to broaden the docket.</p></div>
                 ) : (
-                    <div className="grid gap-6">
-                        {proposals.map((p) => (
-                            <div key={p.id} className="card hover:border-indigo-500/30">
-                                <div className="flex justify-between items-start mb-4">
+                    <div className="grid gap-4">
+                        {visibleProposals.map((p) => (
+                            <div key={p.id} className="card proposal-card">
+                                <div className="proposal-card-header">
                                     <div>
-                                        <div className="flex gap-2 items-center mb-1">
-                                            <span className={`badge ${StateColors[p.state]}`}>{ProposalState[p.state]}</span>
-                                            {p.votingType === 1 && <span className="badge badge-neutral bg-purple-500/10 text-purple-400">Quadratic</span>}
+                                        <div className="proposal-badges">
+                                            <span className={`badge ${StateColors[p.state] || 'badge-neutral'}`}>{ProposalState[p.state] || 'Unknown'}</span>
+                                            {p.votingType === 1 && <span className="badge badge-neutral">Quadratic</span>}
                                             <span className="text-xs text-gray-500">ID: {p.id.substring(0, 8)}...</span>
                                         </div>
                                         <h3 className="text-xl font-semibold">{p.description}</h3>
                                     </div>
-                                    <div className="text-right">
-                                        <div className="text-sm text-gray-400">Proposer</div>
-                                        <div className="font-mono text-sm">{shortenAddress(p.proposer)}</div>
+                                    <div className="proposal-proposer">
+                                        <div>Proposer</div>
+                                        <span>{shortenAddress(p.proposer)}</span>
                                     </div>
                                 </div>
 
-                                <div className="bg-slate-900/50 rounded-lg p-4 mb-4">
-                                    <div className="flex justify-between text-sm mb-2">
-                                        <span className="text-green-400 font-medium">For: {Number(p.forVotes).toFixed(2)}</span>
-                                        <span className="text-red-400 font-medium">Against: {Number(p.againstVotes).toFixed(2)}</span>
-                                        <span className="text-gray-400">Abstain: {Number(p.abstainVotes).toFixed(2)}</span>
+                                <div className="proposal-vote-panel">
+                                    <div className="proposal-vote-labels">
+                                        <span className="vote-for-label">For: {Number(p.forVotes).toFixed(2)}</span>
+                                        <span className="vote-against-label">Against: {Number(p.againstVotes).toFixed(2)}</span>
+                                        <span className="vote-abstain-label">Abstain: {Number(p.abstainVotes).toFixed(2)}</span>
                                     </div>
-                                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden flex">
+                                    <div className="proposal-vote-bar">
                                         {/* Visual Progress Bar logic */}
                                         <div className="bg-green-500" style={{ width: `${(Number(p.forVotes) / (Number(p.forVotes) + Number(p.againstVotes) + Number(p.abstainVotes) + 0.0001)) * 100}%` }}></div>
                                         <div className="bg-red-500" style={{ width: `${(Number(p.againstVotes) / (Number(p.forVotes) + Number(p.againstVotes) + Number(p.abstainVotes) + 0.0001)) * 100}%` }}></div>

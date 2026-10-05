@@ -30,18 +30,18 @@ export default function Header() {
     }, []);
 
     return (
-        <header className="border-b border-[var(--card-border)] bg-[var(--card-bg)] backdrop-blur-md sticky top-0 z-50">
-            <div className="container flex items-center justify-between py-4">
-                <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg"></div>
-                    <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">
+        <header className="governance-header">
+            <div className="governance-header-inner">
+                <div className="governance-brand">
+                    <div className="governance-mark">D</div>
+                    <h1>
                         DAO Governor
                     </h1>
                 </div>
 
                 <button
                     onClick={handleConnect}
-                    className={account ? "btn btn-secondary" : "btn btn-primary"}
+                    className={`btn ${account ? "btn-secondary" : "btn-primary"}`}
                 >
                     {account ? shortenAddress(account) : "Connect Wallet"}
                 </button>
